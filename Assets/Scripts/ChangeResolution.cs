@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,13 +16,15 @@ public class ChangeResolution : MonoBehaviour
     {
         isFullScreen = false;
         _currentRefreshRate = Screen.currentResolution.refreshRate;
-        SetResolution(0, false);
+        SetResolution();
     }
 
-    private void SetResolution(int resolutionIndex, bool isFullScreen)
+    public void SetResolution()
     {
-        Resolution resolution = Screen.resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, isFullScreen, (int)_currentRefreshRate);
+        String t = resolutionDropdown.options[resolutionDropdown.value].text;
+        String[] res = t.Split('x');
+        Screen.SetResolution(int.Parse(res[0]), int.Parse(res[1]), isFullScreen, (int)_currentRefreshRate);
+        print("Resolution set to " + res[0] + "x" + res[1]);
     }
     
     public void SetFullScreen()
