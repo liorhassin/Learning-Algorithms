@@ -21,10 +21,9 @@ public class ChangeResolution : MonoBehaviour
 
     public void SetResolution()
     {
-        String t = resolutionDropdown.options[resolutionDropdown.value].text;
-        String[] res = t.Split('x');
+        String resolutionString = resolutionDropdown.options[resolutionDropdown.value].text;
+        String[] res = resolutionString.Split('x');
         Screen.SetResolution(int.Parse(res[0]), int.Parse(res[1]), isFullScreen, (int)_currentRefreshRate);
-        print("Resolution set to " + res[0] + "x" + res[1]);
     }
     
     public void SetFullScreen()
