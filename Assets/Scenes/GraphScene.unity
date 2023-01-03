@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 264391282}
   - component: {fileID: 264391281}
   m_Layer: 0
-  m_Name: GraphCore
+  m_Name: GraphSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,8 +252,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   file: {fileID: 0}
-  nodePreFab: {fileID: 1494905308091087785, guid: 115d70e882a10d1d396f65e8b9c9530a, type: 3}
-  edgePreFab: {fileID: 1810663186220317156, guid: 8471f5f50401e961db99ea207891fa14, type: 3}
+  nodePreFab:
+  - {fileID: 1494905308091087785, guid: 115d70e882a10d1d396f65e8b9c9530a, type: 3}
+  - {fileID: 7951427308547965109, guid: fcd83c84fae2df6beaf502d54769efad, type: 3}
+  - {fileID: 8702571338561355381, guid: 50fd324c21af0197f892e7a1563b2c29, type: 3}
+  - {fileID: 8208513122908028583, guid: da3ade6e023b7100ea1a206788de85f4, type: 3}
+  edgePreFab:
+  - {fileID: 2006701754031461468, guid: 285eaa547166bce5bbdeb2d0d90b4b4c, type: 3}
+  - {fileID: 1810663186220317156, guid: 8471f5f50401e961db99ea207891fa14, type: 3}
+  - {fileID: 5807501853460689556, guid: c7bd026d174eed3d48f88c18837f990e, type: 3}
+  - {fileID: 218713717392375747, guid: c6b22b0376cbb641187a811ddaaa71ef, type: 3}
+  mainCamera: {fileID: 221459545}
   width: 50
   length: 50
   height: 50
