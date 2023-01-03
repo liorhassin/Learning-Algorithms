@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Graph : MonoBehaviour
 {
 
   public TextAsset file;
-  public GameObject nodePreFab;
-  public GameObject edgePreFab; 
+  public GameObject[] nodePreFab;
+  public GameObject[] edgePreFab;
+  public Camera mainCamera;
   public float width;
   public float length;
   public float height;
@@ -17,26 +16,27 @@ public class Graph : MonoBehaviour
     {
 	    //Load default graph if none is specified.
 		if (file==null){ 
-			GenerateDefaultGraph();
+			GenerateDefaultGraph(0, 0);
 		}
 		else {
 			LoadGmlFromFile(file);
 	    }
     }
 	
-    private void GenerateDefaultGraph()
+    private void GenerateDefaultGraph(int nodeColor, int edgeColor)
     {
-	    GameObject A = Instantiate(nodePreFab, new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject B = Instantiate(nodePreFab, new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject C = Instantiate(nodePreFab, new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject D = Instantiate(nodePreFab, new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject E = Instantiate(nodePreFab, new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);      
-	    
-	    A.transform.parent = transform;
-	    B.transform.parent = transform;
-	    C.transform.parent = transform;
-	    D.transform.parent = transform;
-	    E.transform.parent = transform;
+	    GameObject A = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
+	    GameObject B = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
+	    GameObject C = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
+	    GameObject D = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
+	    GameObject E = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
+
+	    Transform currentParent = this.transform;
+	    A.transform.parent = currentParent;
+	    B.transform.parent = currentParent;
+	    C.transform.parent = currentParent;
+	    D.transform.parent = currentParent;
+	    E.transform.parent = currentParent;
 	    
 	    //Update node name.
 	    A.name = "Node A"; 
@@ -52,12 +52,12 @@ public class Graph : MonoBehaviour
 	    Node nodeE = E.GetComponent<Node>();   
 	    
 	    //Connect nodes(Create new edges)
-	    nodeA.SetEdgePrefab(edgePreFab);
+	    nodeA.SetEdgePrefab(edgePreFab[edgeColor]);
 	    nodeA.AddEdge(nodeB);
 	    nodeA.AddEdge(nodeC);
-	    nodeC.SetEdgePrefab(edgePreFab);
+	    nodeC.SetEdgePrefab(edgePreFab[edgeColor]);
 	    nodeC.AddEdge(nodeD);
-	    nodeD.SetEdgePrefab(edgePreFab);
+	    nodeD.SetEdgePrefab(edgePreFab[edgeColor]);
 	    nodeD.AddEdge(nodeE);
 	    nodeD.AddEdge(nodeA);
     }
@@ -99,12 +99,12 @@ public class Graph : MonoBehaviour
 				if (word == "[" && stage == 0 && currentobject == 1)
 				{
 					stage = 1;
-					GameObject go = Instantiate(nodePreFab,
+					GameObject go = Instantiate(nodePreFab[0],
 						new Vector3(Random.Range(-width / 2, width / 2), Random.Range(-length / 2, length / 2),
 							Random.Range(-height / 2, height / 2)), Quaternion.identity);
 					n = go.GetComponent<Node>();
 					n.transform.parent = transform;
-					n.SetEdgePrefab(edgePreFab);
+					n.SetEdgePrefab(edgePreFab[0]);
 					continue;
 				}
 
