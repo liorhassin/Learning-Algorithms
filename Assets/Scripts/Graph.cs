@@ -4,10 +4,12 @@ using UnityEngine;
 public class Graph : MonoBehaviour
 {
 
-  public TextAsset file;
-  public GameObject[] nodePreFab;
-  public GameObject[] edgePreFab;
-  public Camera mainCamera;
+  public TextAsset file; //Later change to json files.(or gml)
+  public GameObject[] nodePreFab; //Filled with prefabs of possible nodes.
+  public GameObject[] edgePreFab; //Filled with prefabs of possible edges.
+  public Camera mainCamera; //Main camera presented to the player.
+  
+  //Size of which the graph will be generated around(range) shapes as a cube.
   public float width;
   public float length;
   public float height;

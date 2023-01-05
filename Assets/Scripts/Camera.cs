@@ -25,10 +25,10 @@ public class Camera : MonoBehaviour
 	if (child.position.z > maxz) maxz = child.position.z;			
       }
       transform.LookAt(new Vector3((minx+maxx)/2,(miny+maxy)/2,(minz+maxz)/2));
-      if (Input.GetKey("up")){
+      if (Input.GetKey("up") || Input.GetKey("w")){
 	transform.position += new Vector3(0,0,Time.deltaTime*speed);
       }
-      if (Input.GetKey("down")){
+      if (Input.GetKey("down") || Input.GetKey("s")){
 	transform.position -= new Vector3(0,0,Time.deltaTime*speed);
       }      
     }
