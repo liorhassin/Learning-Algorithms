@@ -1,173 +1,125 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Graph : MonoBehaviour
+public class Graph
 {
-
-  public TextAsset file; //Later change to json files.(or gml)
-  public GameObject[] nodePreFab; //Filled with prefabs of possible nodes.
-  public GameObject[] edgePreFab; //Filled with prefabs of possible edges.
-  public Camera mainCamera; //Main camera presented to the player.
-  
-  //Size of which the graph will be generated around(range) shapes as a cube.
-  public float width;
-  public float length;
-  public float height;
-  
-    private void Start()
-    {
-	    //Load default graph if none is specified.
-		if (file==null){ 
-			GenerateDefaultGraph(0, 0);
-		}
-		else {
-			LoadGmlFromFile(file);
-	    }
-    }
-	
-    private void GenerateDefaultGraph(int nodeColor, int edgeColor)
-    {
-	    GameObject A = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject B = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject C = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject D = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-	    GameObject E = Instantiate(nodePreFab[nodeColor], new Vector3(Random.Range(-width/2, width/2), Random.Range(-length/2, length/2), Random.Range(-height/2, height/2)), Quaternion.identity);
-
-	    Transform currentParent = this.transform;
-	    A.transform.parent = currentParent;
-	    B.transform.parent = currentParent;
-	    C.transform.parent = currentParent;
-	    D.transform.parent = currentParent;
-	    E.transform.parent = currentParent;
-	    
-	    //Update node name.
-	    A.name = "Node A"; 
-	    B.name = "Node B";
-	    C.name = "Node C";
-	    D.name = "Node D";
-	    E.name = "Node E";
-	    
-	    Node nodeA = A.GetComponent<Node>();
-	    Node nodeB = B.GetComponent<Node>();
-	    Node nodeC = C.GetComponent<Node>();
-	    Node nodeD = D.GetComponent<Node>();
-	    Node nodeE = E.GetComponent<Node>();   
-	    
-	    //Connect nodes(Create new edges)
-	    nodeA.SetEdgePrefab(edgePreFab[edgeColor]);
-	    nodeA.AddEdge(nodeB);
-	    nodeA.AddEdge(nodeC);
-	    nodeC.SetEdgePrefab(edgePreFab[edgeColor]);
-	    nodeC.AddEdge(nodeD);
-	    nodeD.SetEdgePrefab(edgePreFab[edgeColor]);
-	    nodeD.AddEdge(nodeE);
-	    nodeD.AddEdge(nodeA);
-    }
-
-    //Method taken from forums, not in used right now.
-    private void LoadGmlFromFile(TextAsset f){ 
-		string[] lines = f.text.Split('\n'); 
-		int currentobject = -1; // 0 = graph, 1 = node, 2 = edge
-		int stage = -1; // 0 waiting to open, 1 = waiting for attribute, 2 = waiting for id, 3 = waiting for label, 4 = waiting for source, 5 = waiting for target
-	    Node n = null;
-	    Dictionary<string,Node> nodes = new Dictionary<string,Node>();
-	    foreach (string line in lines){
-			string l = line.Trim();
-			string [] words = l.Split(' ');
-			foreach (string word in words)
-			{
-				if (word == "graph" && stage == -1)
-				{
-					currentobject = 0;
-				}
-
-				if (word == "node" && stage == -1)
-				{
-					currentobject = 1;
-					stage = 0;
-				}
-
-				if (word == "edge" && stage == -1)
-				{
-					currentobject = 2;
-					stage = 0;
-				}
-
-				if (word == "[" && stage == 0 && currentobject == 2)
-				{
-					stage = 1;
-				}
-
-				if (word == "[" && stage == 0 && currentobject == 1)
-				{
-					stage = 1;
-					GameObject go = Instantiate(nodePreFab[0],
-						new Vector3(Random.Range(-width / 2, width / 2), Random.Range(-length / 2, length / 2),
-							Random.Range(-height / 2, height / 2)), Quaternion.identity);
-					n = go.GetComponent<Node>();
-					n.transform.parent = transform;
-					n.SetEdgePrefab(edgePreFab[0]);
-					continue;
-				}
-
-				if (word == "]")
-				{
-					stage = -1;
-				}
-
-				if (word == "id" && stage == 1 && currentobject == 1)
-				{
-					stage = 2;
-					continue;
-				}
-
-				if (word == "label" && stage == 1 && currentobject == 1)
-				{
-					stage = 3;
-					continue;
-				}
-
-				if (stage == 2)
-				{
-					nodes.Add(word, n);
-					stage = 1;
-					break;
-				}
-
-				if (stage == 3)
-				{
-					n.name = word;
-					stage = 1;
-					break;
-				}
-
-				if (word == "source" && stage == 1 && currentobject == 2)
-				{
-					stage = 4;
-					continue;
-				}
-
-				if (word == "target" && stage == 1 && currentobject == 2)
-				{
-					stage = 5;
-					continue;
-				}
-
-				if (stage == 4)
-				{
-					n = nodes[word];
-					stage = 1;
-					break;
-				}
-
-				if (stage == 5)
-				{
-					n.AddEdge(nodes[word]);
-					stage = 1;
-					break;
-				}
-			}
-	    } 
+	private GameObject _graphSpawnPoint;
+	private GameObject _nodePrefab;
+    private GameObject _edgePrefab;
+    
+    private List<Node> _nodes; // For algorithms later on
+    private List<Edge> _edges; // ..
+    
+    private char _currentLetter; // Starting letter for node names.
+    private bool _isWeighted;
+    private bool _isDirected;
+    private int _numberOfNodes;
+    private int _width;
+    private int _length;
+    private int _height;
+ 
+    public Graph(GameObject nodePrefab, GameObject edgePrefab, bool isWeighted, bool isDirected, int numOfNodes){
+        _nodePrefab = nodePrefab;
+        _edgePrefab = edgePrefab;
+        _currentLetter = 'A';
+        _isWeighted = isWeighted;
+        _isDirected = isDirected;
+        _numberOfNodes = numOfNodes;
+        _nodes = new List<Node>();
+        _edges = new List<Edge>();
+        
+        SetSpawnSize(numOfNodes);
+        
+        //Find spawn point for graph
+        _graphSpawnPoint = GameObject.Find("GraphSpawnPoint");
     }
     
+
+    /**
+     * Method used to randomly generate a graph of size n(numberOfNodes)
+     * Used helper methods BuildNodes, BuildEdges.
+     */
+    private void GenerateRandomGraph(string chosenGraph, int numberOfNodes,
+        int maximumNumberOfEdges, bool canIncludeSubGraphs, GameObject node, GameObject edge)
+    {
+        if (!_isDirected) //Change prefab to undirected.
+        {
+            
+        }
+        /*
+         * Here comes the code to randomly generate the graph it self(Edges and Nodes)
+         */
+        if (_isWeighted) //Generate weight for edges.
+        {
+            
+        }
+    }
+
+    private void SetSpawnSize(int size)
+    {
+	    _width = 15 * size;
+	    _length = 15 * size;
+	    _height = 15 * size;
+    }
+
+    /**
+     * Method used to build the nodes of the graph.
+	 */
+    private Node CreateNode()
+    {
+	    GameObject tempNode = UnityEngine.Object.Instantiate(_nodePrefab,
+		    new Vector3(Random.Range(-_width/2, _width/2), 
+			                   Random.Range(-_length/2, _length/2), 
+			                    Random.Range(-_height/2, _height/2)), 
+									Quaternion.identity);
+	    tempNode.transform.parent = _graphSpawnPoint.transform;
+	    tempNode.name = "Node " + _currentLetter;
+	    _currentLetter++;
+	    return tempNode.GetComponent<Node>();
+    }
+    
+    private void AddNode(Node node)
+	{
+		_nodes.Add(node);
+	}
+
+    public Node GetNode(int index)
+    {
+	    return _nodes[index];
+    }
+
+    private Edge CreateEdge(Node from, Node to, int weight, GameObject edgePrefab)
+	{
+		Edge tempEdge = new Edge(from, to, weight, edgePrefab);
+		from.AddEdge(tempEdge);
+		return tempEdge;
+	}
+
+    private void AddEdge(Edge edge)
+	{
+	    _edges.Add(edge);
+	}
+
+    public void GenerateDefaultGraph()
+    {
+	    AddNode(CreateNode()); // A
+	    AddNode(CreateNode()); // B
+	    AddNode(CreateNode()); // C
+	    AddNode(CreateNode()); // D
+	    AddNode(CreateNode()); // E
+	    AddNode(CreateNode()); // F
+	    
+	    AddEdge(CreateEdge(_nodes[0], _nodes[1], 7, _edgePrefab)); // A-B
+	    AddEdge(CreateEdge(_nodes[0], _nodes[2], 9, _edgePrefab)); // A-C
+	    AddEdge(CreateEdge(_nodes[2], _nodes[3], 14, _edgePrefab)); // C-D
+	    AddEdge(CreateEdge(_nodes[3], _nodes[4], 2, _edgePrefab)); // D-E
+	    AddEdge(CreateEdge(_nodes[4], _nodes[5], 9, _edgePrefab)); // E-F
+	    AddEdge(CreateEdge(_nodes[5], _nodes[0], 10, _edgePrefab)); // F-A
+	    AddEdge(CreateEdge(_nodes[1], _nodes[3], 15, _edgePrefab)); // B-D
+	    AddEdge(CreateEdge(_nodes[3], _nodes[0], 41, _edgePrefab)); // D-A
+	    
+	    _nodes[0].SetNodeMaterialColor();
+	    _edges[0].SetEdgeMaterialColor();
+    }
 }
