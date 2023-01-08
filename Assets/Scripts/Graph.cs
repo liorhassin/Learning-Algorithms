@@ -1,22 +1,41 @@
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Graph : MonoBehaviour{
- 
- 
-    private GameObject _nodePrefab;
+public class Graph
+{
+	private GameObject _graphSpawnPoint;
+	private GameObject _nodePrefab;
     private GameObject _edgePrefab;
-    private char _currentLetter;
+    
+    private List<Node> _nodes; // For algorithms later on
+    private List<Edge> _edges; // ..
+    
+    private char _currentLetter; // Starting letter for node names.
     private bool _isWeighted;
     private bool _isDirected;
+    private int _numberOfNodes;
+    private int _width;
+    private int _length;
+    private int _height;
  
-    public Graph(GameObject nodePrefab, GameObject edgePrefab, bool isWeighted, bool isDirected){
+    public Graph(GameObject nodePrefab, GameObject edgePrefab, bool isWeighted, bool isDirected, int numOfNodes){
         _nodePrefab = nodePrefab;
         _edgePrefab = edgePrefab;
         _currentLetter = 'A';
         _isWeighted = isWeighted;
         _isDirected = isDirected;
+        _numberOfNodes = numOfNodes;
+        _nodes = new List<Node>();
+        _edges = new List<Edge>();
+        
+        SetSpawnSize(numOfNodes);
+        
+        //Find spawn point for graph
+        _graphSpawnPoint = GameObject.Find("GraphSpawnPoint");
     }
     
+
     /**
      * Method used to randomly generate a graph of size n(numberOfNodes)
      * Used helper methods BuildNodes, BuildEdges.
@@ -37,35 +56,70 @@ public class Graph : MonoBehaviour{
         }
     }
 
-    /**
-     * Method used to create the number of nodes the player chose.
-     */
-    private void BuildNodes()
+    private void SetSpawnSize(int size)
     {
-        
+	    _width = 15 * size;
+	    _length = 15 * size;
+	    _height = 15 * size;
+    }
+
+    /**
+     * Method used to build the nodes of the graph.
+	 */
+    private Node CreateNode()
+    {
+	    GameObject tempNode = UnityEngine.Object.Instantiate(_nodePrefab,
+		    new Vector3(Random.Range(-_width/2, _width/2), 
+			                   Random.Range(-_length/2, _length/2), 
+			                    Random.Range(-_height/2, _height/2)), 
+									Quaternion.identity);
+	    tempNode.transform.parent = _graphSpawnPoint.transform;
+	    tempNode.name = "Node " + _currentLetter;
+	    _currentLetter++;
+	    return tempNode.GetComponent<Node>();
     }
     
-    /**
-     * Method used to create the spring joints between the nodes.
-     */
-    private void BuildEdges()
+    private void AddNode(Node node)
+	{
+		_nodes.Add(node);
+	}
+
+    public Node GetNode(int index)
     {
-        
+	    return _nodes[index];
     }
 
-    /**
-     * Method used to update Node color(Currently checking, Checking neighbours, Finished with node).
-     */
-    private void SetNodeColor()
-    {
-        
-    }
+    private Edge CreateEdge(Node from, Node to, int weight, GameObject edgePrefab)
+	{
+		Edge tempEdge = new Edge(from, to, weight, edgePrefab);
+		from.AddEdge(tempEdge);
+		return tempEdge;
+	}
 
-    /**
-     * Method used to update Edge color(Currently checking, Checking neighbours, Finished with node).
-     */
-    private void SetEdgeColor()
+    private void AddEdge(Edge edge)
+	{
+	    _edges.Add(edge);
+	}
+
+    public void GenerateDefaultGraph()
     {
-        
+	    AddNode(CreateNode()); // A
+	    AddNode(CreateNode()); // B
+	    AddNode(CreateNode()); // C
+	    AddNode(CreateNode()); // D
+	    AddNode(CreateNode()); // E
+	    AddNode(CreateNode()); // F
+	    
+	    AddEdge(CreateEdge(_nodes[0], _nodes[1], 7, _edgePrefab)); // A-B
+	    AddEdge(CreateEdge(_nodes[0], _nodes[2], 9, _edgePrefab)); // A-C
+	    AddEdge(CreateEdge(_nodes[2], _nodes[3], 14, _edgePrefab)); // C-D
+	    AddEdge(CreateEdge(_nodes[3], _nodes[4], 2, _edgePrefab)); // D-E
+	    AddEdge(CreateEdge(_nodes[4], _nodes[5], 9, _edgePrefab)); // E-F
+	    AddEdge(CreateEdge(_nodes[5], _nodes[0], 10, _edgePrefab)); // F-A
+	    AddEdge(CreateEdge(_nodes[1], _nodes[3], 15, _edgePrefab)); // B-D
+	    AddEdge(CreateEdge(_nodes[3], _nodes[0], 41, _edgePrefab)); // D-A
+	    
+	    _nodes[0].SetNodeMaterialColor();
+	    _edges[0].SetEdgeMaterialColor();
     }
 }

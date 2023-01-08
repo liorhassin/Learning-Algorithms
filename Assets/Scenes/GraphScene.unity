@@ -237,7 +237,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &264391281
 MonoBehaviour:
@@ -262,10 +262,12 @@ MonoBehaviour:
   - {fileID: 1810663186220317156, guid: 8471f5f50401e961db99ea207891fa14, type: 3}
   - {fileID: 5807501853460689556, guid: c7bd026d174eed3d48f88c18837f990e, type: 3}
   - {fileID: 218713717392375747, guid: c6b22b0376cbb641187a811ddaaa71ef, type: 3}
+  materialColors:
+  - {fileID: 2100000, guid: 60366cc36e139965192c2bcfe3ba23f6, type: 2}
+  - {fileID: 2100000, guid: c9182876810a537cc9895468c158b3f4, type: 2}
+  - {fileID: 2100000, guid: d0715770e4a454a83b98a7592fa20e8c, type: 2}
+  - {fileID: 2100000, guid: 310d7794d488ff1778ac479b856b570f, type: 2}
   mainCamera: {fileID: 221459545}
-  width: 50
-  length: 50
-  height: 50
 --- !u!4 &264391282
 Transform:
   m_ObjectHideFlags: 0
