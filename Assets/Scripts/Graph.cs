@@ -15,9 +15,7 @@ public class Graph
     private bool _isWeighted;
     private bool _isDirected;
     private int _numberOfNodes;
-    private int _width;
-    private int _length;
-    private int _height;
+    private int _spawnSize;
  
     public Graph(GameObject nodePrefab, GameObject edgePrefab, bool isWeighted, bool isDirected, int numOfNodes){
         _nodePrefab = nodePrefab;
@@ -26,11 +24,16 @@ public class Graph
         _isWeighted = isWeighted;
         _isDirected = isDirected;
         _numberOfNodes = numOfNodes;
+        _spawnSize = _numberOfNodes * 15;
         _nodes = new List<Node>();
         _edges = new List<Edge>();
+<<<<<<< Updated upstream
         
         SetSpawnSize(numOfNodes);
         
+=======
+
+>>>>>>> Stashed changes
         //Find spawn point for graph
         _graphSpawnPoint = GameObject.Find("GraphSpawnPoint");
     }
@@ -55,23 +58,16 @@ public class Graph
             
         }
     }
-
-    private void SetSpawnSize(int size)
-    {
-	    _width = 15 * size;
-	    _length = 15 * size;
-	    _height = 15 * size;
-    }
-
+    
     /**
      * Method used to build the nodes of the graph.
 	 */
     private Node CreateNode()
     {
 	    GameObject tempNode = UnityEngine.Object.Instantiate(_nodePrefab,
-		    new Vector3(Random.Range(-_width/2, _width/2), 
-			                   Random.Range(-_length/2, _length/2), 
-			                    Random.Range(-_height/2, _height/2)), 
+		    new Vector3(Random.Range(-_spawnSize/2, _spawnSize/2), 
+			                   Random.Range(-_spawnSize/2, _spawnSize/2), 
+			                    Random.Range(-_spawnSize/2, _spawnSize/2)), 
 									Quaternion.identity);
 	    tempNode.transform.parent = _graphSpawnPoint.transform;
 	    tempNode.name = "Node " + _currentLetter;
@@ -119,7 +115,30 @@ public class Graph
 	    AddEdge(CreateEdge(_nodes[1], _nodes[3], 15, _edgePrefab)); // B-D
 	    AddEdge(CreateEdge(_nodes[3], _nodes[0], 41, _edgePrefab)); // D-A
 	    
+<<<<<<< Updated upstream
 	    _nodes[0].SetNodeMaterialColor();
 	    _edges[0].SetEdgeMaterialColor();
+=======
+    }
+    
+    public int GetNumberOfNodes()
+	{
+	    return _numberOfNodes;
+	}
+    
+    public void InitializeAlgorithm(IGraphAlgorithms graphAlgorithm)
+    {
+	    graphAlgorithm.InitializeAlgorithm(this);
+    }
+
+    public void NextStepAlgorithm(IGraphAlgorithms graphAlgorithm)
+    {
+	    graphAlgorithm.NextStep();
+    }
+
+    public void PrevStepAlgorithm(IGraphAlgorithms graphAlgorithm)
+    {
+	    graphAlgorithm.PrevStep();
+>>>>>>> Stashed changes
     }
 }

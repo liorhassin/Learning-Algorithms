@@ -8,7 +8,7 @@ public class GraphManager : MonoBehaviour
 	public TextAsset file; //Later change to json files.(or gml)
 	public GameObject[] nodePreFab; //Filled with prefabs of possible nodes.
 	public GameObject[] edgePreFab; //Filled with prefabs of possible edges.
-	public Material[] materialColors; //Filled with prefabs of possible node colors.
+	//public Material[] materialColors; //Filled with prefabs of possible node colors.
 	public Camera mainCamera; //Main camera presented to the player.
 
 	private void Start()
@@ -16,5 +16,9 @@ public class GraphManager : MonoBehaviour
 		_graph = new Graph(nodePreFab[0], edgePreFab[0], false, true, 7);
 		//Load default graph if none is specified.
 		_graph.GenerateDefaultGraph();
+<<<<<<< Updated upstream
+=======
+		_graph.InitializeAlgorithm(new BreadthFirstSearch());
+>>>>>>> Stashed changes
 	}
 }
