@@ -6,31 +6,41 @@ public class Camera : MonoBehaviour
 {
 
   public GameObject graph;
-  public float speed = 5.0f;
+
+  private float _rotationSpeed = 2.5f; // The speed at which the camera should rotate around the object
+  private float _zoomSpeed = 2.5f; // The speed at which the camera should zoom in and out
+  private float _minZoom = 10f; // The minimum distance the camera should be from the target
+  private float _maxZoom = 1000f; // The maximum distance the camera should be from the target
+
+  private float _currentZoom = 10f; // The current distance the camera is from the target
+  private Vector3 _offset; // The distance between the target and the camera
   
-    void Start(){}
+  void Start()
+  {
+	  _offset = transform.position - graph.transform.position;
+	  _currentZoom = _offset.magnitude;
+  }
 
     void Update()
     {
-      // find centre of the graph
-      float minx = 1000000.0f; float maxx = 0.0f;
-      float miny = 1000000.0f; float maxy = 0.0f;
-      float minz = 1000000.0f; float maxz = 0.0f;      
-      foreach (Transform child in graph.transform){
-	if (child.position.x < minx) minx = child.position.x;
-	if (child.position.x > maxx) maxx = child.position.x;
-	if (child.position.y < miny) miny = child.position.y;
-	if (child.position.y > maxy) maxy = child.position.y;
-	if (child.position.z < minz) minz = child.position.z;
-	if (child.position.z > maxz) maxz = child.position.z;			
-      }
-      transform.LookAt(new Vector3((minx+maxx)/2,(miny+maxy)/2,(minz+maxz)/2));
-      if (Input.GetKey("up") || Input.GetKey("w")){
-	transform.position += new Vector3(0,0,Time.deltaTime*speed);
-      }
-      if (Input.GetKey("down") || Input.GetKey("s")){
-	transform.position -= new Vector3(0,0,Time.deltaTime*speed);
-      }      
+	    transform.LookAt(graph.transform);
+		float horizontal = Input.GetAxis("Horizontal");
+		float vertical_zoom = Input.GetAxis("Vertical_Zoom");
+
+		_offset = Quaternion.AngleAxis(horizontal * _rotationSpeed, Vector3.up) * _offset;
+
+		_currentZoom -= vertical_zoom * _zoomSpeed;
+		_currentZoom = Mathf.Clamp(_currentZoom, _minZoom, _maxZoom);
+		_offset = _offset.normalized * _currentZoom;
+		
+		transform.position = graph.transform.position + _offset; // Update camera movement.
+		
+		//Support mouse right click movement.
+		if (Input.GetMouseButton(1)) {
+			float mouseX = Input.GetAxis("Mouse X");
+			float mouseY = Input.GetAxis("Mouse Y");
+			_offset = Quaternion.AngleAxis(mouseX * _rotationSpeed, Vector3.up) * _offset;
+			_offset = Quaternion.AngleAxis(mouseY * _rotationSpeed, Vector3.left) * _offset;
+		}
     }
-    
 }

@@ -7,12 +7,12 @@ public class Node : MonoBehaviour
   private GameObject _currentNodePrefab;
   private List<Edge> _edges = new List<Edge> ();
 
-  void Start()
+  private void Start()
   {
     transform.GetChild(0).GetComponent<TextMesh>().text = name;
   }
   
-  void Update()
+  private void Update()
   {
     Vector3 currentVec3 = this.transform.position;
 
