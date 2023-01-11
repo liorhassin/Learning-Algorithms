@@ -120,6 +120,11 @@ public class Graph
 	    graphAlgorithm.InitializeAlgorithm(this);
     }
 
+    public void FinishAlgorithm(IGraphAlgorithms graphAlgorithms)
+    {
+	    graphAlgorithms.FinishAlgorithm();
+    }
+
     public void NextStepAlgorithm(IGraphAlgorithms graphAlgorithm)
     {
 	    graphAlgorithm.NextStep();
