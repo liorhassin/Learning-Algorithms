@@ -27,13 +27,7 @@ public class Graph
         _spawnSize = _numberOfNodes * 15;
         _nodes = new List<Node>();
         _edges = new List<Edge>();
-<<<<<<< Updated upstream
         
-        SetSpawnSize(numOfNodes);
-        
-=======
-
->>>>>>> Stashed changes
         //Find spawn point for graph
         _graphSpawnPoint = GameObject.Find("GraphSpawnPoint");
     }
@@ -114,11 +108,6 @@ public class Graph
 	    AddEdge(CreateEdge(_nodes[5], _nodes[0], 10, _edgePrefab)); // F-A
 	    AddEdge(CreateEdge(_nodes[1], _nodes[3], 15, _edgePrefab)); // B-D
 	    AddEdge(CreateEdge(_nodes[3], _nodes[0], 41, _edgePrefab)); // D-A
-	    
-<<<<<<< Updated upstream
-	    _nodes[0].SetNodeMaterialColor();
-	    _edges[0].SetEdgeMaterialColor();
-=======
     }
     
     public int GetNumberOfNodes()
@@ -139,6 +128,5 @@ public class Graph
     public void PrevStepAlgorithm(IGraphAlgorithms graphAlgorithm)
     {
 	    graphAlgorithm.PrevStep();
->>>>>>> Stashed changes
     }
 }

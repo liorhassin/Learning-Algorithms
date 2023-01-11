@@ -64,8 +64,8 @@ public class Edge
     public void SetEdgeMaterialColor()
     {
         Material renderer = _edgeObject.GetComponent<Renderer>().material;
-        renderer.color = Color.red;
-        renderer.SetColor("_EmissionColor", Color.red);
+        renderer.color = Color.green;
+        renderer.SetColor("_EmissionColor", Color.green);
     }
 
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Node : MonoBehaviour
 {
   private GameObject _currentNodePrefab;
   private List<Edge> _edges = new List<Edge> ();
+  private int _pi;
 
   private void Start()
   {
@@ -48,5 +50,25 @@ public class Node : MonoBehaviour
     Material renderer = GetComponent<Renderer>().material;
     renderer.color = Color.red;
     renderer.SetColor("_EmissionColor", Color.red);
+  }
+
+  public int GetPi()
+  {
+    return _pi;
+  }
+
+  public void SetPi(int pi)
+  {
+    _pi = pi;
+  }
+
+  public List<Edge> GetEdges()
+  {
+    return _edges;
+  }
+
+  public String GetNodeLetter()
+  {
+    return name.Remove(0, 5);
   }
 }
