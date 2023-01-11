@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GraphManager : MonoBehaviour
 {
@@ -10,12 +8,29 @@ public class GraphManager : MonoBehaviour
 	public GameObject[] edgePreFab; //Filled with prefabs of possible edges.
 	//public Material[] materialColors; //Filled with prefabs of possible node colors.
 	public Camera mainCamera; //Main camera presented to the player.
+	private IGraphAlgorithms _graphAlgorithms;
 
 	private void Start()
 	{
 		_graph = new Graph(nodePreFab[0], edgePreFab[0], false, true, 6);
 		//Load default graph if none is specified.
 		_graph.GenerateDefaultGraph();
-		_graph.InitializeAlgorithm(new BreadthFirstSearch());
+		_graphAlgorithms = new BreadthFirstSearch();
+		_graph.InitializeAlgorithm(_graphAlgorithms);
+	}
+
+	public void NextStepAlgorithm()
+	{
+		_graph.NextStepAlgorithm(_graphAlgorithms);
+	}
+
+	public void PrevStepAlgorithm()
+	{
+		_graph.PrevStepAlgorithm(_graphAlgorithms);
+	}
+
+	public void FinishAlgorithm()
+	{
+		_graph.FinishAlgorithm(_graphAlgorithms);
 	}
 }

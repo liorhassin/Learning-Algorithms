@@ -45,6 +45,7 @@ public class Node : MonoBehaviour
   public void AddEdge(Edge newEdge){
     _edges.Add(newEdge);
   }
+
   public void SetNodeMaterialColor()
   {
     Material renderer = GetComponent<Renderer>().material;
