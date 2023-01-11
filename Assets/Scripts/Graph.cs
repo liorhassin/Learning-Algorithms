@@ -59,12 +59,12 @@ public class Graph
     private Node CreateNode()
     {
 	    GameObject tempNode = UnityEngine.Object.Instantiate(_nodePrefab,
-		    new Vector3(Random.Range(-_spawnSize/2, _spawnSize/2), 
-			                   Random.Range(-_spawnSize/2, _spawnSize/2), 
-			                    Random.Range(-_spawnSize/2, _spawnSize/2)), 
+		    new Vector3(Random.Range(-_spawnSize, _spawnSize), 
+			                   Random.Range(-_spawnSize, _spawnSize), 
+			                    Random.Range(-_spawnSize, _spawnSize)), 
 									Quaternion.identity);
 	    tempNode.transform.parent = _graphSpawnPoint.transform;
-	    tempNode.name = "Node " + _currentLetter;
+	    tempNode.name = _currentLetter.ToString();
 	    _currentLetter++;
 	    return tempNode.GetComponent<Node>();
     }

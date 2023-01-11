@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class BreadthFirstSearch : IGraphAlgorithms
 {
+    //Base parameters for algorithm
     private Queue<Node> _queue;
     private Node _currentNode;
     private HashSet<Node> _visitedSet;
-    private bool[] _visited;
-    private int _status; //Status will change from 0 to 1 and indicate if next step
-                         //is checking next node or checking edges of node in queue.
-    private byte[] _encode;
+    private int _status;
+    
+    //Base parameters for prev function
     
     public void InitializeAlgorithm(Graph graph)
     {
@@ -20,10 +20,8 @@ public class BreadthFirstSearch : IGraphAlgorithms
         _currentNode = null;
         _queue = new Queue<Node>();
         int size = graph.GetNumberOfNodes();
-        _visited = new bool[size];
-        for (int i = 0; i < size; i++) { // Initialize visited array and pi to max int.
-            _visited[i] = false;
-            graph.GetNode(i).SetPi(Int32.MaxValue);
+        for (int i = 0; i < size; i++) { // pi to max int.
+            graph.GetNode(i).SetPi(int.MaxValue);
         }
         
         // Set node A as starting node for now, later player will be able to choose.
@@ -72,7 +70,6 @@ public class BreadthFirstSearch : IGraphAlgorithms
                     edge.SetEdgeMaterialColor();
                 }
             }
-            
             _status = (_status + 1) % 2;
         }
         else if(_status == 0) //Changing Node color to signal this is the next Node being checked.

@@ -67,9 +67,4 @@ public class Node : MonoBehaviour
   {
     return _edges;
   }
-
-  public String GetNodeLetter()
-  {
-    return name.Remove(0, 5);
-  }
 }
