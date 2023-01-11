@@ -13,12 +13,9 @@ public class GraphManager : MonoBehaviour
 
 	private void Start()
 	{
-		_graph = new Graph(nodePreFab[0], edgePreFab[0], false, true, 7);
+		_graph = new Graph(nodePreFab[0], edgePreFab[0], false, true, 6);
 		//Load default graph if none is specified.
 		_graph.GenerateDefaultGraph();
-<<<<<<< Updated upstream
-=======
 		_graph.InitializeAlgorithm(new BreadthFirstSearch());
->>>>>>> Stashed changes
 	}
 }
