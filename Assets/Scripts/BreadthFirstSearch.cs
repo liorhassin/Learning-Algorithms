@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Text;
-using UnityEngine;
 
 public class BreadthFirstSearch : IGraphAlgorithms
 {
@@ -36,7 +35,7 @@ public class BreadthFirstSearch : IGraphAlgorithms
         while (_queue.Any())
         {
             _currentNode = _queue.Dequeue();
-            _currentNode.SetNodeMaterialColor();
+            _currentNode.SetNodeMaterialColor(2);
             foreach(Edge edge in _currentNode.GetEdges())
             {
                 if (!_visitedSet.Contains(edge.GetTo()))
@@ -47,7 +46,11 @@ public class BreadthFirstSearch : IGraphAlgorithms
                 if (edge.GetFrom().GetPi() + 1 < edge.GetTo().GetPi())
                 {
                     edge.GetTo().SetPi(edge.GetFrom().GetPi() + 1);
-                    edge.SetEdgeMaterialColor();
+                    edge.SetEdgeMaterialColor(2);
+                }
+                if (edge.GetColorStatus() != 2)
+                {
+                    edge.SetEdgeMaterialColor(3);
                 }
             }
         }
@@ -67,9 +70,14 @@ public class BreadthFirstSearch : IGraphAlgorithms
                 if (edge.GetFrom().GetPi() + 1 < edge.GetTo().GetPi())
                 {
                     edge.GetTo().SetPi(edge.GetFrom().GetPi() + 1);
-                    edge.SetEdgeMaterialColor();
+                    edge.SetEdgeMaterialColor(2);
+                }
+                if (edge.GetColorStatus() != 2)
+                {
+                    edge.SetEdgeMaterialColor(3);
                 }
             }
+            _currentNode.SetNodeMaterialColor(2);
             _status = (_status + 1) % 2;
         }
         else if(_status == 0) //Changing Node color to signal this is the next Node being checked.
@@ -77,7 +85,7 @@ public class BreadthFirstSearch : IGraphAlgorithms
             if (_queue.Any())
             {
                 _currentNode = _queue.Dequeue();
-                _currentNode.SetNodeMaterialColor();
+                _currentNode.SetNodeMaterialColor(1);
                 _visitedSet.Add(_currentNode);
                 _status = (_status + 1) % 2;
             }

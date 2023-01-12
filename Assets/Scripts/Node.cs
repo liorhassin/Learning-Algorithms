@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class Node : MonoBehaviour
   private GameObject _currentNodePrefab;
   private List<Edge> _edges = new List<Edge> ();
   private int _pi;
+  private int _colorStatus;
 
   private void Start()
   {
@@ -46,11 +48,25 @@ public class Node : MonoBehaviour
     _edges.Add(newEdge);
   }
 
-  public void SetNodeMaterialColor()
+  public void SetNodeMaterialColor(int status)
   {
     Material renderer = GetComponent<Renderer>().material;
-    renderer.color = Color.red;
-    renderer.SetColor("_EmissionColor", Color.red);
+    switch(status)
+    {
+      case 0:
+        renderer.color = Color.white;
+        renderer.SetColor("_EmissionColor", Color.white);
+        break;
+      case 1:
+        renderer.color = Color.yellow;
+        renderer.SetColor("_EmissionColor", Color.yellow);
+        break;
+      case 2:
+        renderer.color = Color.green;
+        renderer.SetColor("_EmissionColor", Color.green);
+        break;
+    }
+    _colorStatus = status;
   }
 
   public int GetPi()
