@@ -8,12 +8,14 @@ public class Edge
     private SpringJoint _sj;
     private float _weight;
     private GameObject _edgeObject;
+    private int _colorStatus;
 
     public Edge (Node from, Node to, float weight, GameObject prefab)
     {
         _from = from;
         _to = to;
         _weight = weight;
+        _colorStatus = 0;
         
         CreateSpringJointConnection(prefab);
     }
@@ -61,11 +63,34 @@ public class Edge
         _weight = weight;
     }
 
-    public void SetEdgeMaterialColor()
+    public void SetEdgeMaterialColor(int status)
     {
         Material renderer = _edgeObject.GetComponent<Renderer>().material;
-        renderer.color = Color.green;
-        renderer.SetColor("_EmissionColor", Color.green);
+        switch(status)
+        {
+            case 0:
+                renderer.color = Color.white;
+                renderer.SetColor("_EmissionColor", Color.white);
+                break;
+            case 1:
+                renderer.color = Color.yellow;
+                renderer.SetColor("_EmissionColor", Color.yellow);
+                break;
+            case 2:
+                renderer.color = Color.green;
+                renderer.SetColor("_EmissionColor", Color.green);
+                break;
+            case 3:
+                renderer.color = Color.black;
+                renderer.SetColor("_EmissionColor", Color.black);
+                break;
+        }
+        _colorStatus = status;
+    }
+
+    public int GetColorStatus()
+    {
+        return _colorStatus;
     }
 
 }
