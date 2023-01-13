@@ -12,7 +12,12 @@ public class BreadthFirstSearch : IGraphAlgorithms
     private int _status;
     
     //Base parameters for prev function
-    
+    //TODO - Complete prev with parameters to store status or class that stores
+    //TODO - 1 Node and List of Edges, each saves the previous status of changed node and edges.
+    //TODO - Current runs, First: Update node being checked color,
+    //TODO -               Second: Update edges colors + next nodes
+    //TODO - Possible fix for issue, add to edge bool if visited or not. so the current Next run
+    //TODO - Will check 1 edge at a time.
     public void InitializeAlgorithm(Graph graph)
     {
         _visitedSet = new HashSet<Node>();

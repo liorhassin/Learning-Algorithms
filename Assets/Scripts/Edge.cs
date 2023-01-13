@@ -16,21 +16,22 @@ public class Edge
         _to = to;
         _weight = weight;
         _colorStatus = 0;
-        
         CreateSpringJointConnection(prefab);
     }
 
     private void CreateSpringJointConnection(GameObject edgePrefab)
     {
-        SpringJoint sj = _from.AddComponent<SpringJoint> ();  
+        SpringJoint sj = _from.AddComponent<SpringJoint> ();
+        sj.anchor = sj.transform.InverseTransformPoint(_from.transform.position);
         sj.autoConfigureConnectedAnchor = false;
-        sj.anchor = new Vector3(0,0.5f,0);
-        sj.connectedAnchor = new Vector3(0,0,0);    
         sj.enableCollision = true;
         sj.connectedBody = _to.GetComponent<Rigidbody>();
+        sj.damper = 100f;
+        sj.minDistance = 0.1f;
         _sj = sj;
-        Vector3 toPosition = _from.transform.position;
-        _edgeObject = UnityEngine.Object.Instantiate(edgePrefab, new Vector3(toPosition.x, toPosition.y, toPosition.z), Quaternion.identity);
+        Vector3 toPosition = _to.transform.position;
+        _edgeObject = Object.Instantiate(edgePrefab, new Vector3(toPosition.x, toPosition.y, toPosition.z), Quaternion.identity);
+        _edgeObject.SetActive(false);
     }
 
     public float GetWeight()
@@ -92,5 +93,4 @@ public class Edge
     {
         return _colorStatus;
     }
-
 }

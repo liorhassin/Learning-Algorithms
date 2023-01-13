@@ -9,7 +9,7 @@ public class Node : MonoBehaviour
   private GameObject _currentNodePrefab;
   private List<Edge> _edges = new List<Edge> ();
   private int _pi;
-  private int _colorStatus;
+  private int _colorStatus = 0;
 
   private void Start()
   {

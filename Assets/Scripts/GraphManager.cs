@@ -6,15 +6,32 @@ public class GraphManager : MonoBehaviour
 	public TextAsset file; //Later change to json files.(or gml)
 	public GameObject[] nodePreFab; //Filled with prefabs of possible nodes.
 	public GameObject[] edgePreFab; //Filled with prefabs of possible edges.
-	//public Material[] materialColors; //Filled with prefabs of possible node colors.
 	public Camera mainCamera; //Main camera presented to the player.
 	private IGraphAlgorithms _graphAlgorithms;
+	
+	//User parameter for random graph generation:
+	private int _highestDegree;
+	private int _numOfNodes;
+	private bool _isDirected;
+	private bool _isWeighted;
+	private int _nodePreFab;
+	private int _edgePrefab;
+	private int[] _colorStatus = new int[5];
+	/**
+	 * _colorStatus[i]:
+	 * i=0 -> default node color.
+	 * i=1 -> default edge color.
+	 * i=2 -> visited node color.
+	 * i=3 -> visited edge color.
+	 * i=4 -> finished node color.
+	 * i=5 -> finished edge color.
+	 */
 
 	private void Start()
 	{
 		_graph = new Graph(nodePreFab[0], edgePreFab[0], false, true, 6);
-		//Load default graph if none is specified.
 		_graph.GenerateDefaultGraph();
+		_graph.InstantiateGraph();
 		_graphAlgorithms = new BreadthFirstSearch();
 		_graph.InitializeAlgorithm(_graphAlgorithms);
 	}
@@ -32,5 +49,28 @@ public class GraphManager : MonoBehaviour
 	public void FinishAlgorithm()
 	{
 		_graph.FinishAlgorithm(_graphAlgorithms);
+	}
+
+	/**
+	 * TODO - Generation of graph and initialization when chosen to
+	 */
+	public void GenerateGraph()
+	{
+		
+	}
+
+	public void InstantiateGraph()
+	{
+		
+	}
+
+	public void LoadDefaultPreset()
+	{
+		
+	}
+
+	public void LoadPresets(int index)
+	{
+		
 	}
 }
