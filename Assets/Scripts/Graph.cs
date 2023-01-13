@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -37,10 +39,14 @@ public class Graph
      * Method used to randomly generate a graph of size n(numberOfNodes)
      * Used helper methods BuildNodes, BuildEdges.
      */
-    private void GenerateRandomGraph(string chosenGraph, int numberOfNodes,
+    public void GenerateRandomGraph(string chosenGraph, int numberOfNodes,
         int maximumNumberOfEdges, bool canIncludeSubGraphs, GameObject node, GameObject edge)
     {
-        if (!_isDirected) //Change prefab to undirected.
+	    if (this._nodes.Any()) // If any node exists graph is already built.
+	    {
+		    return;
+	    }
+	    if (!_isDirected) //Change prefab to undirected.
         {
             
         }
@@ -58,12 +64,27 @@ public class Graph
 	 */
     private Node CreateNode()
     {
-	    GameObject tempNode = UnityEngine.Object.Instantiate(_nodePrefab,
-		    new Vector3(Random.Range(-_spawnSize, _spawnSize), 
-			                   Random.Range(-_spawnSize, _spawnSize), 
-			                    Random.Range(-_spawnSize, _spawnSize)), 
-									Quaternion.identity);
+	    // GameObject tempNode = UnityEngine.Object.Instantiate(_nodePrefab,
+		   //  new Vector3(Random.Range(-_spawnSize, _spawnSize), 
+			  //                  Random.Range(-_spawnSize, _spawnSize), 
+			  //                   Random.Range(-_spawnSize, _spawnSize)), 
+					// 				Quaternion.identity);
+	    GameObject tempNode = Object.Instantiate(_nodePrefab, Vector3.zero, Quaternion.identity);
 	    tempNode.transform.parent = _graphSpawnPoint.transform;
+	    tempNode.SetActive(false);
+	    
+	    //Temp option is to create sj to fix each node to the anchor.
+	    //Another option is to fix just the first node to the anchor with fixed joint.
+	    
+	    // SpringJoint sj = tempNode.AddComponent<SpringJoint> ();
+	    // sj.anchor = sj.transform.InverseTransformPoint(tempNode.transform.position);
+	    // sj.autoConfigureConnectedAnchor = false;
+	    // sj.enableCollision = true;
+	    // sj.connectedBody = _graphSpawnPoint.GetComponent<Rigidbody>();
+	    // sj.damper = 10;
+	    // Vector3 toPosition = _graphSpawnPoint.transform.position;
+	    // Object.Instantiate(_edgePrefab, new Vector3(toPosition.x, toPosition.y, toPosition.z), Quaternion.identity);
+
 	    tempNode.name = _currentLetter.ToString();
 	    _currentLetter++;
 	    return tempNode.GetComponent<Node>();
@@ -71,6 +92,7 @@ public class Graph
     
     private void AddNode(Node node)
 	{
+		node.gameObject.SetActive(true);
 		_nodes.Add(node);
 	}
 
@@ -133,5 +155,53 @@ public class Graph
     public void PrevStepAlgorithm(IGraphAlgorithms graphAlgorithm)
     {
 	    graphAlgorithm.PrevStep();
+    }
+    
+    
+    //TODO - Fix node spawn point to get better spawning result and good spacing
+
+    public void InstantiateGraph()
+    {
+	    foreach (Node node in _nodes)
+	    {
+		    Vector3 spawnPoint;
+		    //First node is getting connected into 0,0,0 spawning point to anchor entire graph
+		    //Creating anchoring FixedJoint:
+		    if (node == _nodes[0])
+		    {
+			    spawnPoint = Vector3.zero;
+			    FixedJoint sj = node.AddComponent<FixedJoint>();
+			    sj.anchor = sj.transform.InverseTransformPoint(node.transform.position);
+			    sj.autoConfigureConnectedAnchor = false;
+			    sj.enableCollision = true;
+			    sj.connectedBody = _graphSpawnPoint.GetComponent<Rigidbody>();
+			    Vector3 toPosition = _graphSpawnPoint.transform.position;
+			    Object.Instantiate(_edgePrefab, new Vector3(toPosition.x, toPosition.y, toPosition.z), Quaternion.identity);
+		    }
+		    else
+		    {
+			    spawnPoint = new Vector3(Random.Range(-_spawnSize/2 - 50, _spawnSize/2),
+				    Random.Range(-_spawnSize/2, _spawnSize/2 + 50),
+				    Random.Range(-_spawnSize/2 - 25, _spawnSize/2 + 25));
+		    }
+		    node.transform.position = spawnPoint;
+		    node.gameObject.SetActive(true);
+		    InstantiateEdges(node);
+	    }
+    }
+
+    private void InstantiateEdges(Node node)
+    {
+	    foreach (Edge edge in node.GetEdges())
+	    {
+		    edge.GetEdgeObject().gameObject.SetActive(true);
+	    }
+    }
+    
+    //TODO - Maybe add after graph generation is looking good
+    //TODO - Goal is to stop nodes from moving this method will be called after a few seconds.
+    private void MakeGraphStatic()
+    {
+	    
     }
 }
