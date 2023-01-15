@@ -80,6 +80,11 @@ public class Node : MonoBehaviour
     _colorStatus = status;
   }
 
+  public int GetNodeMaterialColor()
+  {
+    return _colorStatus;
+  }
+
   public int GetPi()
   {
     return _pi;
