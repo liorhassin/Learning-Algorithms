@@ -26,7 +26,8 @@ public class Edge
         sj.autoConfigureConnectedAnchor = false;
         sj.enableCollision = true;
         sj.connectedBody = _to.GetComponent<Rigidbody>();
-        sj.damper = 100f;
+        sj.damper = 10f;
+        sj.spring = 10f;
         sj.minDistance = 0.1f;
         _sj = sj;
         Vector3 toPosition = _to.transform.position;

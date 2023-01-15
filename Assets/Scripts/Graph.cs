@@ -46,14 +46,21 @@ public class Graph
 	    {
 		    return;
 	    }
+
+	    //First initialize all nodes for the graph.
+	    _numberOfNodes = numberOfNodes;
+	    for (int i = 0; i < _numberOfNodes; i++)
+	    {
+		    AddNode(CreateNode());
+	    }
+	    /*
+	     * Both methods next will decide which prefab is being loaded and if we add weight to each edge or not.
+	     */
 	    if (!_isDirected) //Change prefab to undirected.
         {
             
         }
-        /*
-         * Here comes the code to randomly generate the graph it self(Edges and Nodes)
-         */
-        if (_isWeighted) //Generate weight for edges.
+	    if (_isWeighted) //Generate weight for edges.
         {
             
         }

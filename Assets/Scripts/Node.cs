@@ -10,6 +10,8 @@ public class Node : MonoBehaviour
   private List<Edge> _edges = new List<Edge> ();
   private int _pi;
   private int _colorStatus = 0;
+  private float _time = 0.0f;
+  private Vector3 _finalPosition;
 
   private void Start()
   {
@@ -18,29 +20,38 @@ public class Node : MonoBehaviour
   
   private void Update()
   {
-    Vector3 currentVec3 = this.transform.position;
-
-    //Iterate through all the edges and make sure they stretch to the correct position.
-    foreach (Edge edge in _edges)
+    _time += Time.deltaTime;
+    if (_time < 30)
     {
-      GameObject edgeObject = edge.GetEdgeObject();
-      Transform currentEdgeTransform = edgeObject.transform; //Refer to edge current transform(pos)
-      currentEdgeTransform.position = new Vector3(currentVec3.x, currentVec3.y, currentVec3.z); //Change position of edge
+      Vector3 currentVec3 = this.transform.position;
       
-      SpringJoint sj = edge.GetSpringJoint(); //Get the spring joint
-      GameObject target = sj.connectedBody.gameObject; //Get the target of the spring joint
+      //Iterate through all the edges and make sure they stretch to the correct position.
+      foreach (Edge edge in _edges)
+      {
+        GameObject edgeObject = edge.GetEdgeObject();
+        Transform currentEdgeTransform = edgeObject.transform; //Refer to edge current transform(pos)
+        currentEdgeTransform.position = new Vector3(currentVec3.x, currentVec3.y, currentVec3.z); //Change position of edge
       
-      Transform targetTransform = target.transform; //Get the transform of the target
-      currentEdgeTransform.LookAt(target.transform); //Rotate edge to look at target
+        SpringJoint sj = edge.GetSpringJoint(); //Get the spring joint
+        GameObject target = sj.connectedBody.gameObject; //Get the target of the spring joint
       
-      Vector3 localScale = currentEdgeTransform.localScale; //Get the local scale of the edge
-      localScale.z = Vector3.Distance(currentVec3, target.transform.position); //Set the z scale to the distance between the two nodes
-      currentEdgeTransform.localScale = localScale; //Set the local scale of the edge
-
-      Vector3 targetVec3Pos = targetTransform.position; //Get the position of the target
-      edgeObject.transform.position = new Vector3((currentVec3.x+targetVec3Pos.x)/2,
-        (currentVec3.y+targetVec3Pos.y)/2,
-        (currentVec3.z+targetVec3Pos.z)/2); //Set the position of the edge to the middle of the two nodes
+        Transform targetTransform = target.transform; //Get the transform of the target
+        currentEdgeTransform.LookAt(target.transform); //Rotate edge to look at target
+      
+        Vector3 localScale = currentEdgeTransform.localScale; //Get the local scale of the edge
+        localScale.z = Vector3.Distance(currentVec3, target.transform.position); //Set the z scale to the distance between the two nodes
+        currentEdgeTransform.localScale = localScale; //Set the local scale of the edge
+      
+        Vector3 targetVec3Pos = targetTransform.position; //Get the position of the target
+        edgeObject.transform.position = new Vector3((currentVec3.x+targetVec3Pos.x)/2,
+          (currentVec3.y+targetVec3Pos.y)/2,
+          (currentVec3.z+targetVec3Pos.z)/2); //Set the position of the edge to the middle of the two nodes
+        _finalPosition = this.transform.position;
+      }
+    }
+    else
+    {
+      transform.position = _finalPosition;
     }
   }
   
