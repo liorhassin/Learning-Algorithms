@@ -6,7 +6,8 @@
     public void InitializeAlgorithm(Graph graph);
 
     /**
-     * Will run the algorithm from current state, with a few seconds between each step.
+     * Will run the algorithm from current state.
+     * Possible addition will be to support time gap between steps when auto completing algorithm.
      */
     public void FinishAlgorithm();
 

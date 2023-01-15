@@ -1,30 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
-public class BreadthFirstSearch : IGraphAlgorithms
+public class BreadthFirstSearch : State, IGraphAlgorithms
 {
-    //Base parameters for algorithm
     private Queue<Node> _queue;
     private Node _currentNode;
     private HashSet<Node> _visitedSet;
     private int _status;
-    
-    //Base parameters for prev function
-    //TODO - Complete prev with parameters to store status or class that stores
-    //TODO - 1 Node and List of Edges, each saves the previous status of changed node and edges.
-    //TODO - Current runs, First: Update node being checked color,
-    //TODO -               Second: Update edges colors + next nodes
-    //TODO - Possible fix for issue, add to edge bool if visited or not. so the current Next run
-    //TODO - Will check 1 edge at a time.
+    private LinkedList<State> _algorithmState;
+
     public void InitializeAlgorithm(Graph graph)
     {
         _visitedSet = new HashSet<Node>();
         _currentNode = null;
+        _algorithmState = new LinkedList<State>();
         _queue = new Queue<Node>();
-        int size = graph.GetNumberOfNodes();
-        for (int i = 0; i < size; i++) { // pi to max int.
+        for (int i = 0; i < graph.GetNumberOfNodes(); i++) { // pi to max int.
             graph.GetNode(i).SetPi(int.MaxValue);
         }
         
@@ -98,6 +90,18 @@ public class BreadthFirstSearch : IGraphAlgorithms
     }
 
     public void PrevStep()
+    {
+        throw new NotImplementedException();
+    }
+
+    
+    //AbstractState class part:
+    public override void LoadNextState()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void LoadPrevState()
     {
         throw new NotImplementedException();
     }

@@ -174,7 +174,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2500
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -262,6 +262,7 @@ MonoBehaviour:
   - {fileID: 1810663186220317156, guid: 8471f5f50401e961db99ea207891fa14, type: 3}
   - {fileID: 5807501853460689556, guid: c7bd026d174eed3d48f88c18837f990e, type: 3}
   - {fileID: 218713717392375747, guid: c6b22b0376cbb641187a811ddaaa71ef, type: 3}
+  - {fileID: 449048661950166665, guid: 24d1b9a094a33894c8ba78b236694cb8, type: 3}
   mainCamera: {fileID: 221459545}
 --- !u!4 &264391282
 Transform:

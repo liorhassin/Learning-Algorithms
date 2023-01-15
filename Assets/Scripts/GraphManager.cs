@@ -33,6 +33,7 @@ public class GraphManager : MonoBehaviour
 		_graph.GenerateDefaultGraph();
 		_graph.InstantiateGraph();
 		_graphAlgorithms = new BreadthFirstSearch();
+		//_graphAlgorithms = new DepthFirstSearch();
 		_graph.InitializeAlgorithm(_graphAlgorithms);
 	}
 
