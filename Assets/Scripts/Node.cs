@@ -21,9 +21,9 @@ public class Node : MonoBehaviour
   private void Update()
   {
     _time += Time.deltaTime;
-    if (_time < 30)
+    if (_time < 20)
     {
-      Vector3 currentVec3 = this.transform.position;
+      Vector3 currentVec3 = transform.position;
       
       //Iterate through all the edges and make sure they stretch to the correct position.
       foreach (Edge edge in _edges)
@@ -37,16 +37,20 @@ public class Node : MonoBehaviour
       
         Transform targetTransform = target.transform; //Get the transform of the target
         currentEdgeTransform.LookAt(target.transform); //Rotate edge to look at target
-      
+
+        List<GameObject> edgeCube = edge.GetEdgeComponents(); //Get all edge components
         Vector3 localScale = currentEdgeTransform.localScale; //Get the local scale of the edge
-        localScale.z = Vector3.Distance(currentVec3, target.transform.position); //Set the z scale to the distance between the two nodes
-        currentEdgeTransform.localScale = localScale; //Set the local scale of the edge
-      
         Vector3 targetVec3Pos = targetTransform.position; //Get the position of the target
+        localScale.z = Vector3.Distance(currentVec3, targetVec3Pos); //Set the z scale to the distance between the two nodes
+        edgeCube[0].transform.localScale = new Vector3(2, 2, localScale.z); //Update
+        for (int i = 2; i < 6; i++)
+        {
+          edgeCube[i].transform.localScale = new Vector3(2, 2, 20);
+        }
         edgeObject.transform.position = new Vector3((currentVec3.x+targetVec3Pos.x)/2,
           (currentVec3.y+targetVec3Pos.y)/2,
           (currentVec3.z+targetVec3Pos.z)/2); //Set the position of the edge to the middle of the two nodes
-        _finalPosition = this.transform.position;
+        _finalPosition = transform.position;
       }
     }
     else

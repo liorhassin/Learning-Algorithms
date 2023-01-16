@@ -183,7 +183,14 @@ public class Graph
 			    sj.enableCollision = true;
 			    sj.connectedBody = _graphSpawnPoint.GetComponent<Rigidbody>();
 			    Vector3 toPosition = _graphSpawnPoint.transform.position;
-			    Object.Instantiate(_edgePrefab, new Vector3(toPosition.x, toPosition.y, toPosition.z), Quaternion.identity);
+			    GameObject anchor = Object.Instantiate(_edgePrefab, new Vector3(toPosition.x, toPosition.y, toPosition.z), Quaternion.identity);
+			    foreach (Transform t in anchor.transform)
+			    {
+				    if (t != null)
+				    {
+					    t.GetComponent<Renderer>().enabled = false;
+				    }
+			    }
 		    }
 		    else
 		    {
