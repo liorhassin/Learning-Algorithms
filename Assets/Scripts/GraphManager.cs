@@ -29,7 +29,7 @@ public class GraphManager : MonoBehaviour
 
 	private void Start()
 	{
-		_graph = new Graph(nodePreFab[0], edgePreFab[0], false, true, 6);
+		_graph = new Graph(nodePreFab[0], edgePreFab[4], false, true, 6);
 		_graph.GenerateDefaultGraph();
 		_graph.InstantiateGraph();
 		_graphAlgorithms = new BreadthFirstSearch();
