@@ -144,29 +144,44 @@ public class Graph
 	    return _numberOfNodes;
 	}
     
+    /**
+     * Initialize the required parameters for the chosen algorithm.
+     */
     public void InitializeAlgorithm(IGraphAlgorithms graphAlgorithm)
     {
 	    graphAlgorithm.InitializeAlgorithm(this);
     }
 
-    public void FinishAlgorithm(IGraphAlgorithms graphAlgorithms)
+    /**
+     * Initialzing all states of algorithm. 
+     */
+    public void PreCalculateAlgorithm(IGraphAlgorithms graphAlgorithms)
     {
-	    graphAlgorithms.FinishAlgorithm();
+	    graphAlgorithms.PreCalculateAlgorithm();
     }
 
-    public void NextStepAlgorithm(IGraphAlgorithms graphAlgorithm)
+    /**
+     * Controlled by button -> moves 1 step ahead in algorithm.
+     */
+    public void LoadNextAlgorithmState(IGraphAlgorithms graphAlgorithm)
     {
-	    graphAlgorithm.NextStep();
+	    graphAlgorithm.LoadNextAlgorithmState();
     }
 
-    public void PrevStepAlgorithm(IGraphAlgorithms graphAlgorithm)
+    /**
+     * Controlled by button -> moves 1 step back in algorithm.
+     */
+    public void LoadPrevAlgorithmState(IGraphAlgorithms graphAlgorithm)
     {
-	    graphAlgorithm.PrevStep();
+	    graphAlgorithm.LoadPrevAlgorithmState();
     }
     
     
     //TODO - Fix node spawn point to get better spawning result and good spacing
 
+    /**
+     * After all nodes and edges are created, Fully initialize graph(Spawn objects to visualize the graph in 3D).
+     */
     public void InstantiateGraph()
     {
 	    foreach (Node node in _nodes)

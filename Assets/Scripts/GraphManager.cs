@@ -4,8 +4,8 @@ public class GraphManager : MonoBehaviour
 {
 	private static Graph _graph;
 	public TextAsset file; //Later change to json files.(or gml)
-	public GameObject[] nodePreFab; //Filled with prefabs of possible nodes.
-	public GameObject[] edgePreFab; //Filled with prefabs of possible edges.
+	public GameObject[] nodePreFab; //Filled with prefabs of possible nodes. will be changed to single element
+	public GameObject[] edgePreFab; //Filled with prefabs of possible edges. will be changed to single element
 	public Camera mainCamera; //Main camera presented to the player.
 	private IGraphAlgorithms _graphAlgorithms;
 	
@@ -35,43 +35,21 @@ public class GraphManager : MonoBehaviour
 		_graphAlgorithms = new BreadthFirstSearch();
 		//_graphAlgorithms = new DepthFirstSearch();
 		_graph.InitializeAlgorithm(_graphAlgorithms);
+		_graph.PreCalculateAlgorithm(_graphAlgorithms);
 	}
 
-	public void NextStepAlgorithm()
+	public void LoadNextAlgorithmState()
 	{
-		_graph.NextStepAlgorithm(_graphAlgorithms);
+		_graph.LoadNextAlgorithmState(_graphAlgorithms);
 	}
 
-	public void PrevStepAlgorithm()
+	public void LoadPrevAlgorithmState()
 	{
-		_graph.PrevStepAlgorithm(_graphAlgorithms);
+		_graph.LoadPrevAlgorithmState(_graphAlgorithms);
 	}
 
-	public void FinishAlgorithm()
+	public void PreCalculateAlgorithm()
 	{
-		_graph.FinishAlgorithm(_graphAlgorithms);
-	}
-
-	/**
-	 * TODO - Generation of graph and initialization when chosen to
-	 */
-	public void GenerateGraph()
-	{
-		
-	}
-
-	public void InstantiateGraph()
-	{
-		
-	}
-
-	public void LoadDefaultPreset()
-	{
-		
-	}
-
-	public void LoadPresets(int index)
-	{
-		
+		_graph.PreCalculateAlgorithm(_graphAlgorithms);
 	}
 }
