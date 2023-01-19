@@ -21,7 +21,7 @@ public class Node : MonoBehaviour
   private void Update()
   {
     _time += Time.deltaTime;
-    if (_time < 20)
+    if (_time < 30)
     {
       Vector3 currentVec3 = transform.position;
       
@@ -73,10 +73,14 @@ public class Node : MonoBehaviour
         renderer.SetColor("_EmissionColor", Color.white);
         break;
       case 1:
-        renderer.color = Color.yellow;
+        renderer.color = Color.yellow; // In Queue
         renderer.SetColor("_EmissionColor", Color.yellow);
         break;
       case 2:
+        renderer.color = Color.blue; // Currently being checked.
+        renderer.SetColor("_EmissionColor", Color.blue);
+        break;
+      case 3:
         renderer.color = Color.green;
         renderer.SetColor("_EmissionColor", Color.green);
         break;
@@ -84,7 +88,7 @@ public class Node : MonoBehaviour
     _colorStatus = status;
   }
 
-  public int GetNodeMaterialColor()
+  public int GetColorStatus()
   {
     return _colorStatus;
   }

@@ -22,7 +22,7 @@ public class DepthFirstSearch : IGraphAlgorithms
         _status = 1;
     }
 
-    public void FinishAlgorithm()
+    public void PreCalculateAlgorithm()
     {
         while (_nodeStack.Any())
         {
@@ -58,7 +58,12 @@ public class DepthFirstSearch : IGraphAlgorithms
         }
     }
 
-    public void PrevStep()
+    public void LoadNextAlgorithmState()
+    {
+        throw new System.NotImplementedException();
+    }
+    
+    public void LoadPrevAlgorithmState()
     {
         throw new System.NotImplementedException();
     }
